@@ -11,16 +11,15 @@ class profile extends database
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
             $phone = $_POST['phone'];
-            $city = $_POST['city'];
-            $country = $_POST['country'];
+
             $img = time() . '_' . $_FILES['image']['name'];
             $target = 'user_img/' . $img;
 
             if ($_FILES['image']['name'] == '') {
                 //Update query will update all the data inside user_info table
-                $sql = "UPDATE `user_info` SET `phone`= '$phone',`country`='$country',`city`='$city', `updated` = CURRENT_TIMESTAMP WHERE email = '$email'";
+                $sql = "UPDATE `user_tbl` SET `phone`= '$phone' WHERE email = '$email'";
             } else {
-                $sql = "UPDATE `user_info` SET `phone`= '$phone',`country`='$country',`city`='$city', `image` = '$img', `updated` = CURRENT_TIMESTAMP WHERE email = '$email'";
+                $sql = "UPDATE `user_tbl` SET `phone`= '$phone', `image` = '$img' WHERE email = '$email'";
             }
 
 

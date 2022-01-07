@@ -19,11 +19,11 @@
                     <?php if (isset($_SESSION['email'])) { ?>
 
                     <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="create.php">Create User
+                        <a class="nav-link text-dark font-weight-bold" href="create.php">Create QR
                         </a>
                     </li>
                     <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="result.php">Result
+                        <a class="nav-link text-dark font-weight-bold" href="list.php">QR codes list
                         </a>
                     </li>
 

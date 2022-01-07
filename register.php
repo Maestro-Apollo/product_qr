@@ -10,19 +10,13 @@ class signInUp extends database
         if (isset($_POST['signup'])) {
             //addslashes take different ascii value and trim will remove start and last white space
             $fname = addslashes(trim($_POST['name']));
-            $title = addslashes(trim($_POST['title']));
-            $company = addslashes(trim($_POST['company']));
-            $age = addslashes(trim($_POST['age']));
+
             // $age = addslashes(trim($_POST['age']));
 
             $email = addslashes(trim($_POST['email']));
             $phone = addslashes(trim($_POST['phone']));
 
-            $img = 'user_img/' . time() . '_' . addslashes(trim($_FILES['image']['name']));
-
-            $img1 = time() . '_' . addslashes(trim($_FILES['image']['name']));
-
-            $target = 'user_img/' . $img1;
+            $img = 'placeholder-16-9.jpg';
 
             $pass = trim($_POST['password']);
 
@@ -31,23 +25,19 @@ class signInUp extends database
 
             $sql = "select * from user_tbl where email = '$email'";
             $res = mysqli_query($this->link, $sql);
-            $sql2 = "select * from user_tbl where company = '$company'";
-            $res2 = mysqli_query($this->link, $sql2);
+
             if (mysqli_num_rows($res) > 0) {
                 $msg = "Email is Taken";
                 return $msg;
-            } else if (mysqli_num_rows($res2) > 0) {
-                $msg = "Company name is used";
-                return $msg;
             } else {
 
-                $sql3 = "INSERT INTO `user_tbl` (`id`, `pid`, `name`, `company`, `title`, `age`, `img`, `email`, `password`, `phone`, `created`) VALUES (NULL, NULL, '$fname', '$company', '$title', '$age', '$img', '$email', '$password', '$phone', CURRENT_TIMESTAMP)";
+                $sql3 = "INSERT INTO `user_tbl` (`user_id`, `name`, `email`, `password`, `phone`,`image`, `created_at`) VALUES (NULL, '$fname', '$email', '$password','$phone', '$img', CURRENT_TIMESTAMP)";
                 $res3 = mysqli_query($this->link, $sql3);
                 if ($res3) {
-                    move_uploaded_file($_FILES['image']['tmp_name'], $target);
+
                     $_SESSION['email'] = $email;
                     //header function will redirect the user to profile.php page
-                    header('location:result.php');
+                    header('location:profile.php');
                 } else {
                     $msg = "Not Added";
                     return $msg;
@@ -92,7 +82,7 @@ $objSignUp = $obj->signUpFunction();
     <?php include('layout/navbar.php'); ?>
 
     <section>
-        <div class="container bg-white pr-4 pl-4  log_section pb-5">
+        <div class="container bg-white pr-4 pl-4 shadow log_section pb-5">
 
             <div class="row">
 
@@ -132,27 +122,20 @@ $objSignUp = $obj->signUpFunction();
 
                             <?php } ?>
                         </div>
-                        <input type="text" name="name" class="form-control mt-4 p-4 border-0 bg-light"
-                            placeholder="Full Name" required>
-                        <input type="text" name="title" class="form-control mt-4 p-4 border-0 bg-light"
-                            placeholder="Person Title" required>
-                        <input type="email" name="email" class="form-control mt-4 p-4 border-0 bg-light"
+                        <input type="text" name="name" class="form-control mt-4 p-4  bg-light" placeholder="Full Name"
+                            required>
+
+                        <input type="email" name="email" class="form-control mt-4 p-4  bg-light"
                             placeholder="Email Address" required>
-                        <input type="text" name="company" class="form-control mt-4 p-4 border-0 bg-light"
-                            placeholder="Company Name" required>
-                        <input type="number" name="age" class="form-control mt-4 p-4 border-0 bg-light"
-                            placeholder="Age" required>
-                        <input type="text" name="phone" class="form-control mt-4 p-4 border-0 bg-light"
+
+                        <input type="text" name="phone" class="form-control mt-4 p-4  bg-light"
                             placeholder="Phone Number" required>
-                        <input type="password" id="passwordField" class="form-control mt-4 p-4 border-0 bg-light"
+                        <input type="password" id="passwordField" class="form-control mt-4 p-4  bg-light"
                             placeholder="Password" data-parsley-minlength="5" required>
                         <input data-parsley-equalto="#passwordField" type="password"
-                            class="form-control mt-4 p-4 border-0 bg-light" name="password"
-                            placeholder="Confirm Password" required>
-                        <div class="custom-file mt-4">
-                            <input type="file" name="image" class="custom-file-input" accept="image/*" id="customFile">
-                            <label class="custom-file-label" for="customFile">Choose image</label>
-                        </div>
+                            class="form-control mt-4 p-4  bg-light" name="password" placeholder="Confirm Password"
+                            required>
+
                         <button name="signup" type="submit"
                             class="btn btn-block font-weight-bold log_btn btn-lg mt-4">SIGNUP</button>
 
