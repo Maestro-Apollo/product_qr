@@ -35,10 +35,11 @@ class profile extends database
             if ($res) {
                 $path = 'QR_Codes/';
                 $file = $path . $id_number . ".png";
-                $text = "localhost/user-link.php?id=" . $id_number;
+                $rawFile = $id_number . ".png";
+                $text = 'https://codekey-centrale.fr/product_qr/user-link.php?id=' . $id_number;
                 QRcode::png($text, $file, QR_ECLEVEL_L, 10, 3);
 
-                return "<img src='" . $file . "'>";
+                return "<div class='text-center'><img class='w-75' src='" . $file . "'><br><a href='QR_Codes/" . $rawFile . "' download class='btn btn-success'>Download</a></div>";
             } else {
                 return false;
             }

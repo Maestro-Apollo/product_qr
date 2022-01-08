@@ -20,7 +20,7 @@ class signInUp extends database
 
                 if (password_verify($password, $pass) == true) {
                     $_SESSION['email'] = $email;
-                    header('location:create.php');
+                    header('location:profile.php');
                     return $res;
                 } else {
                     $msg = "Wrong password";
@@ -92,17 +92,17 @@ $objSignIn = $obj->signInFunction();
 
                             <?php } ?>
                         </div>
-                        <input type="email" name="emailLogIn" class="form-control p-4  border-0 bg-light"
+                        <input type="email" name="emailLogIn" class="form-control p-4   bg-light"
                             placeholder="Enter your email address" required>
-                        <input type="password" class="form-control mt-4 p-4 border-0 bg-light" name="passwordLogIn"
+                        <input type="password" class="form-control mt-4 p-4  bg-light" name="passwordLogIn"
                             placeholder="Enter your password" required>
 
 
                         <button type="submit" name="signIn"
                             class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
-                        <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
+                        <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
                                 style="color: #05445E;">Forget
-                                Password</a></small>
+                                Password</a></small> -->
                         <!-- <hr>
                         <small class="font-weight-bold mt-1 text-muted">Don't have an account? <a href="register.php"
                                 style="color: #05445E;">Forget Password</a></small> -->

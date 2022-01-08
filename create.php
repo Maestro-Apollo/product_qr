@@ -61,6 +61,7 @@ $obj = new signInUp;
                 </div>
                 <div class="col-md-6">
                     <div id="output"></div>
+
                 </div>
                 <!-- </form> -->
             </div>
@@ -105,6 +106,7 @@ $obj = new signInUp;
 
                 }
             });
+            this.reset();
 
         });
     })
