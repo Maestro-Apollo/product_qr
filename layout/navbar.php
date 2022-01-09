@@ -19,11 +19,11 @@
                     <?php if (isset($_SESSION['email'])) { ?>
 
                     <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="create.php">Register New Item
+                        <a class="nav-link text-dark font-weight-bold" href="check-qr-code.php">Register New Item
                         </a>
                     </li>
                     <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="list.php">Change Your Link
+                        <a class="nav-link text-dark font-weight-bold" href="change-link.php">Change Your Link
                         </a>
                     </li>
 
@@ -42,6 +42,25 @@
 
 
 
+                    <?php } else if ($_SESSION['admin']) { ?>
+                    <li class="nav-item p-1">
+                        <a class="nav-link text-dark font-weight-bold" href="admin.php">List of QR codes
+                        </a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link text-dark font-weight-bold" href="create.php">Create QR Code
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item p-1">
+                        <a class="nav-link text-dark font-weight-bold" href="about_us.php">About Us
+                        </a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link text-dark font-weight-bold" href="logout.php">Logout
+                        </a>
+                    </li>
                     <?php } else { ?>
                     <!-- These are when user is not logged in -->
                     <li class="nav-item p-1">

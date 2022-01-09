@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (isset($_SESSION['email'])) {
+} else {
+    header('location:login.php');
+}
 include('class/database.php');
 class signInUp extends database
 {
@@ -9,43 +12,24 @@ class signInUp extends database
     public function signInFunction()
     {
         if (isset($_POST['signIn'])) {
-            $email = $_POST['emailLogIn'];
-            $password = $_POST['passwordLogIn'];
+            $email = $_SESSION['email'];
+            $name = $_POST['name'];
+            $id_number = $_POST['id_number'];
+            $security = $_POST['security'];
 
-            $sqlAdmin = "SELECT * from admin where email = '$email' ";
-            $resAdmin = mysqli_query($this->link, $sqlAdmin);
+            $six_digit_random_number = random_int(100000, 999999);
 
-            if (mysqli_num_rows($resAdmin) > 0) {
-                $row = mysqli_fetch_assoc($resAdmin);
-                $pass = $row['password'];
-
-                if (password_verify($password, $pass) == true) {
-                    $_SESSION['admin'] = $email;
-                    header('location:admin.php');
-                    return $resAdmin;
-                } else {
-                    $msg = "Wrong password";
-                    return $msg;
-                }
-            }
-
-            $sql = "select * from user_tbl where email = '$email' ";
+            $sql = "SELECT * from qr_tbl where user_email = '$email' AND product_id = '$id_number' AND `security` = '$security' ";
             $res = mysqli_query($this->link, $sql);
-            if (mysqli_num_rows($res) > 0) {
-                $row = mysqli_fetch_assoc($res);
-                $pass = $row['password'];
 
-                if (password_verify($password, $pass) == true) {
-                    $_SESSION['email'] = $email;
-                    header('location:profile.php');
-                    return $res;
-                } else {
-                    $msg = "Wrong password";
-                    return $msg;
+            if (mysqli_num_rows($res) > 0) {
+                $sqlUpdate = "UPDATE qr_tbl SET user_confirm = 1, `security` = '$six_digit_random_number', `product_name` = '$name' where user_email = '$email' AND product_id = '$id_number' ";
+                $resUpdate = mysqli_query($this->link, $sqlUpdate);
+                if ($resUpdate) {
+                    header('location:change-link.php');
                 }
             } else {
-                $msg = "Invalid Information";
-                return $msg;
+                return 'Wrong Information';
             }
         }
         # code...
@@ -91,32 +75,29 @@ $objSignIn = $obj->signInFunction();
                     <form action="" method="post" data-parsley-validate>
 
                         <div class="text-center">
-                            <h4 class="font-weight-bold pt-5 pb-4">LOGIN</h4>
+                            <h4 class="font-weight-bold pt-5 pb-4">Add New Item</h4>
 
                             <?php if ($objSignIn) { ?>
-                            <?php if (strcmp($objSignIn, 'Wrong password') == 0) { ?>
+                            <?php if (strcmp($objSignIn, 'Wrong Information') == 0) { ?>
                             <div class="alert alert-danger alert-dismissible fade show">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <strong>Wrong Password!</strong>
+                                <strong>Wrong Information!</strong>
                             </div>
                             <?php } ?>
-                            <?php if (strcmp($objSignIn, 'Invalid Information') == 0) { ?>
-                            <div class="alert alert-warning alert-dismissible fade show">
-                                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <strong>Please Sign Up!</strong>
-                            </div>
-                            <?php } ?>
+
 
                             <?php } ?>
                         </div>
-                        <input type="email" name="emailLogIn" class="form-control p-4   bg-light"
-                            placeholder="Enter your email address" required>
-                        <input type="password" class="form-control mt-4 p-4  bg-light" name="passwordLogIn"
-                            placeholder="Enter your password" required>
+                        <input type="text" name="name" class="form-control p-4   bg-light" placeholder="Enter Item Name"
+                            required>
+                        <input type="text" class="form-control mt-4 p-4  bg-light" name="id_number"
+                            placeholder="Enter your Id Number" required>
+                        <input type="number" class="form-control mt-4 p-4  bg-light" name="security"
+                            placeholder="Enter Security Code" required>
 
 
                         <button type="submit" name="signIn"
-                            class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
+                            class="btn btn-block font-weight-bold log_btn btn-lg mt-4">ADD</button>
                         <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
                                 style="color: #05445E;">Forget
                                 Password</a></small> -->

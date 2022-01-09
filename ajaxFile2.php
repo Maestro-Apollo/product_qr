@@ -1,6 +1,5 @@
 <?php
 session_start();
-$name = "'" . $_SESSION['email'] . "'";
 include 'config.php';
 
 $request = 1;
@@ -23,23 +22,22 @@ if ($request == 1) {
     ## Search 
     $searchQuery = " ";
     if ($searchValue != '') {
-        $searchQuery = " and (product_name like '%" . $searchValue . "%' or 
-            link like '%" . $searchValue . "%' or 
+        $searchQuery = " and (link like '%" . $searchValue . "%' or 
             product_id like'%" . $searchValue . "%' )  ";
     }
 
     ## Total number of records without filtering
-    $sel = mysqli_query($con, "select count(*) as allcount from qr_tbl where user_confirm = 1 AND user_email=" . $name);
+    $sel = mysqli_query($con, "select count(*) as allcount from qr_tbl");
     $records = mysqli_fetch_assoc($sel);
     $totalRecords = $records['allcount'];
 
     ## Total number of records with filtering
-    $sel = mysqli_query($con, "select count(*) as allcount from qr_tbl WHERE user_confirm = 1 AND user_email=" . $name  . $searchQuery);
+    $sel = mysqli_query($con, "select count(*) as allcount from qr_tbl WHERE 1" . $searchQuery);
     $records = mysqli_fetch_assoc($sel);
     $totalRecordwithFilter = $records['allcount'];
 
     ## Fetch records
-    $empQuery = "select * from qr_tbl WHERE user_confirm = 1 AND user_email=" . $name . $searchQuery . " order by " . $columnName . " " . $columnSortOrder . " limit " . $row . "," . $rowperpage;
+    $empQuery = "select * from qr_tbl WHERE 1" . $searchQuery . " order by " . $columnName . " " . $columnSortOrder . " limit " . $row . "," . $rowperpage;
     $empRecords = mysqli_query($con, $empQuery);
     $data = array();
     $arr = array();
@@ -47,7 +45,7 @@ if ($request == 1) {
     while ($row = mysqli_fetch_assoc($empRecords)) {
 
         // Update Button
-        $updateButton = "<button class='btn btn-sm btn-block btn-info updateUser' data-id='" . $row['qr_id'] . "' data-toggle='modal' data-target='#updateModal' >Update</button>";
+        $updateButton = "<a download href='QR_Codes/" . $row['qr_image'] . "' class='btn btn-sm btn-block btn-info'>Download</a>";
 
         $img = "<img src='QR_Codes/" . $row['qr_image'] . "' alt=''>";
 
@@ -60,7 +58,6 @@ if ($request == 1) {
             "product_id" => $row['product_id'],
             "qr_image" => $img,
             "link" => $row['link'],
-            "product_name" => $row['product_name'],
             "action" => $action
         );
     }
