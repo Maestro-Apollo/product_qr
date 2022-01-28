@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
-} else {
-    header('location:login.php');
-}
+
 include('class/database.php');
 class signInUp extends database
 {
@@ -13,23 +10,16 @@ class signInUp extends database
     {
         if (isset($_POST['signIn'])) {
             $email = $_SESSION['email'];
-            $name = $_POST['name'];
-            $id_number = $_POST['id_number'];
-            $security = $_POST['security'];
+            $password = $_POST['password'];
 
-            $six_digit_random_number = random_int(100000, 999999);
+            $pass = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "SELECT * from qr_tbl where user_email = '$email' AND product_id = '$id_number' AND `security` = '$security' ";
+            $sql = "UPDATE user_tbl SET password = '$pass' WHERE email = '$email' ";
             $res = mysqli_query($this->link, $sql);
-
-            if (mysqli_num_rows($res) > 0) {
-                $sqlUpdate = "UPDATE qr_tbl SET user_confirm = 1, `security` = '$six_digit_random_number', `product_name` = '$name' where user_email = '$email' AND product_id = '$id_number' ";
-                $resUpdate = mysqli_query($this->link, $sqlUpdate);
-                if ($resUpdate) {
-                    header('location:change-link.php');
-                }
+            if ($res) {
+                return 'Updated!';
             } else {
-                return 'Wrong Information';
+                return 'Invalid Information';
             }
         }
         # code...
@@ -71,34 +61,38 @@ $objSignIn = $obj->signInFunction();
         <div class="container bg-white pr-4 pl-4  log_section pb-5">
 
             <div class="row">
-                <div class="col-md-6 offset-md-3">
+                <div class="col-md-6 offset-3 ">
                     <form action="" method="post" data-parsley-validate>
 
                         <div class="text-center">
-                            <h4 class="font-weight-bold pt-5 pb-4">Add New Item</h4>
+                            <h4 class="font-weight-bold pt-5 pb-4">Reset Password</h4>
 
                             <?php if ($objSignIn) { ?>
-                            <?php if (strcmp($objSignIn, 'Wrong Information') == 0) { ?>
-                            <div class="alert alert-danger alert-dismissible fade show">
+                            <?php if (strcmp($objSignIn, 'Updated!') == 0) { ?>
+                            <div class="alert alert-success alert-dismissible fade show">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <strong>Wrong Information!</strong>
+                                <strong>Password Updated!</strong>
+                            </div>
+                            <?php } ?>
+                            <?php if (strcmp($objSignIn, 'Invalid Information') == 0) { ?>
+                            <div class="alert alert-warning alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Please Sign Up!</strong>
                             </div>
                             <?php } ?>
 
-
                             <?php } ?>
                         </div>
-                        <input type="text" name="name" class="form-control p-4   bg-light" placeholder="Enter Item Name"
-                            required>
-                        <input type="text" class="form-control mt-4 p-4  bg-light" name="id_number"
-                            placeholder="Enter your Id Number" required>
-                        <input type="number" class="form-control mt-4 p-4  bg-light" name="security"
-                            placeholder="Enter Security Code" required>
+
+                        <input type="password" class="form-control mt-4 p-4  bg-light" id="password" name="password"
+                            placeholder="Enter your password" required>
+                        <input data-parsley-equalto="#password" type="password" class="form-control mt-4 p-4  bg-light"
+                            name="confirmPassword" placeholder="Confirm Password" required>
 
 
                         <button type="submit" name="signIn"
-                            class="btn btn-block font-weight-bold log_btn btn-lg mt-4">ADD</button>
-                        <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
+                            class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
+                        <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget-password.php"
                                 style="color: #05445E;">Forget
                                 Password</a></small> -->
                         <!-- <hr>

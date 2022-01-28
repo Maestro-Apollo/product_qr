@@ -50,8 +50,8 @@ $obj = new signInUp;
                     <form action="" id="myForm">
                         <input type="email" name="email" class="form-control mt-4 p-4  bg-light"
                             placeholder="User Email Address" required>
-                        <input type="text" name="id_number" class="form-control mt-4 p-4  bg-light"
-                            placeholder="Enter ID number" required>
+                        <!-- <input type="text" name="id_number" class="form-control mt-4 p-4  bg-light"
+                            placeholder="Enter ID number" required> -->
                         <input type="text" name="link" class="form-control mt-4 p-4  bg-light" placeholder="Enter URL"
                             required>
                         <button name="signup" type="submit"

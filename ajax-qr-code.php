@@ -18,8 +18,18 @@ class profile extends database
     public function insertQR()
     {
         $email = addslashes(trim($_POST['email']));
-        $id_number = addslashes(trim($_POST['id_number']));
+        // $id_number = addslashes(trim($_POST['id_number']));
         $link = addslashes(trim($_POST['link']));
+
+        $seed = str_split(
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                . '0123456789'
+        ); // and any other characters
+        shuffle($seed); // probably optional since array_is randomized; this may be redundant
+        $rand = '';
+        foreach (array_rand($seed, 6) as $k) $rand .= $seed[$k];
+
+        $id_number = 'EC-' . $rand;
 
         $six_digit_random_number = random_int(100000, 999999);
 
@@ -50,9 +60,8 @@ class profile extends database
                 $message .= "This is one time code. After adding new item it will change.<br>";
                 $message .= "Product ID Number: ";
                 $message .= "<b>$id_number</b><br>";
-                $message .= "Download your QR Code: <br><br>";
-                $message .= '<a download style="padding:10px 60px;background-color: #F3CC3C;color:#000;font-weight:600;text-decoration:none" href="https://encryptclothing.co.uk/QR_Codes/' . $rawFile . '">Download</a>';
-                $headers = "From: info@joinautonomy.eu \r\n";
+
+                $headers = "From: info@encryptclothing.co.uk \r\n";
                 $headers .= "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type: text/html;charset=UTF-8" . "\r\n";
 

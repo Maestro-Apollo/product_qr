@@ -110,7 +110,6 @@ $row = mysqli_fetch_assoc($objShow);
                                     <tr>
                                         <th>Product Name</th>
                                         <th>Product ID</th>
-                                        <th>QR Code</th>
                                         <th>link</th>
 
                                         <th>Action</th>
@@ -182,8 +181,6 @@ $row = mysqli_fetch_assoc($objShow);
             data: 'product_name'
         }, {
             data: 'product_id'
-        }, {
-            data: 'qr_image'
         }, {
             data: 'link'
         }, {
@@ -267,6 +264,11 @@ $row = mysqli_fetch_assoc($objShow);
             alert('Please fill all fields.');
         }
     });
+    </script>
+    <script>
+    document.addEventListener("contextmenu", function(prevent) {
+        prevent.preventDefault();
+    })
     </script>
 </body>
 

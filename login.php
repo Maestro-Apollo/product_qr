@@ -117,9 +117,9 @@ $objSignIn = $obj->signInFunction();
 
                         <button type="submit" name="signIn"
                             class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
-                        <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
+                        <small class="font-weight-bold mt-1 text-muted"><a href="forget-password.php"
                                 style="color: #05445E;">Forget
-                                Password</a></small> -->
+                                Password</a></small>
                         <!-- <hr>
                         <small class="font-weight-bold mt-1 text-muted">Don't have an account? <a href="register.php"
                                 style="color: #05445E;">Forget Password</a></small> -->
